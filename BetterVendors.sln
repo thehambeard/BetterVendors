@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterVendors", "BetterVendors.csproj", "{7D2405EF-8C43-4636-8DE8-4774F3887D6C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ModMaker", "..\KingmakerModMaker\ModMaker\ModMaker.shproj", "{7D3F9428-C134-47FE-9D04-305B4D330401}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\KingmakerModMaker\ModMaker\ModMaker.projitems*{7d2405ef-8c43-4636-8de8-4774f3887d6c}*SharedItemsImports = 4
+		..\KingmakerModMaker\ModMaker\ModMaker.projitems*{7d3f9428-c134-47fe-9d04-305b4d330401}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D2405EF-8C43-4636-8DE8-4774F3887D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D2405EF-8C43-4636-8DE8-4774F3887D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D2405EF-8C43-4636-8DE8-4774F3887D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D2405EF-8C43-4636-8DE8-4774F3887D6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4B5FDEDF-F8A6-4E09-83D4-FF3829E57FDC}
+	EndGlobalSection
+EndGlobal
