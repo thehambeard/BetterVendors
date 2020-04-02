@@ -29,7 +29,7 @@ namespace BetterVendors.VMenu
             using (new GL.VerticalScope())
             {
                 if (!Mod.Enabled) return;
-                if (SceneManager.GetActiveScene().name.Equals("CapitalThroneRoom_Light"))
+                if (SceneManager.GetActiveScene().name.Equals("CapitalThroneRoom"))
                 {
                     OnGUIMenuVendor(TRV.VendorSelect.Hassuf);
                 OnGUIMenuVendor(TRV.VendorSelect.Verdel);
