@@ -29,7 +29,8 @@ namespace BetterVendors.VMenu
             using (new GL.VerticalScope())
             {
                 if (!Mod.Enabled) return;
-                if (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0"))
+                if (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0") ||
+                Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092"))
                 {
                     OnGUIMenuVendor(TRV.VendorSelect.Hassuf);
                 OnGUIMenuVendor(TRV.VendorSelect.Verdel);

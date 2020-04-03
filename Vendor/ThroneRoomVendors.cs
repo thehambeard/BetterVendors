@@ -41,7 +41,9 @@ namespace BetterVendors.Vendor
             GameModeType currentMode = Game.Instance.CurrentMode;
 
 
-            if (currentMode == GameModeType.Default || currentMode == GameModeType.Pause && Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0"))
+            if (currentMode == GameModeType.Default || currentMode == GameModeType.Pause && 
+                (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0") ||
+                Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092")))
             {
                 DespawnVendor(vendor);
                 TRVendors[vendor].EntityData = Game.Instance.EntityCreator.SpawnUnit((BlueprintUnit)Utilities.GetBlueprintByGuid<BlueprintUnit>(TRVendors[vendor].Guid), TRVendors[vendor].Position, TRVendors[vendor].Rotation, Game.Instance.CurrentScene.MainState);
@@ -121,7 +123,8 @@ namespace BetterVendors.Vendor
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
 
-            if (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0"))
+            if (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0") ||
+                Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092"))
             { 
                 CheckForVendorEntities();
                 foreach(VendorSelect vendor in Enum.GetValues(typeof(VendorSelect)))
