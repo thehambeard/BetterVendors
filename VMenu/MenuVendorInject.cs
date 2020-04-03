@@ -1,4 +1,5 @@
-﻿using BetterVendors.Vendor;
+﻿using Kingmaker;
+using BetterVendors.Vendor;
 using ModMaker;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,11 @@ namespace BetterVendors.VMenu
         public void OnGUI(UnityModManager.ModEntry modEntry)
         {
             if (!Mod.Enabled) return;
+            if (!Game.Instance.Player.ControllableCharacters.Any())
+            {
+                GL.Label(Local["Menu_Lbl_NotInGame"]);
+                return;
+            }
             using (new GL.VerticalScope("box"))
             {
                 GUILayout.Label(Local["Menu_Txt_Search"]);

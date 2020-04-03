@@ -1,9 +1,11 @@
-﻿using Kingmaker.Cheats;
+﻿using Kingmaker;
+using Kingmaker.Cheats;
 using Kingmaker.Blueprints.Items;
 using ModMaker;
 using ModMaker.Utility;
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityModManagerNet;
 using static BetterVendors.Main;
@@ -28,6 +30,11 @@ namespace BetterVendors.VMenu
         public void OnGUI(UnityModManager.ModEntry modEntry)
         {
             if (!Mod.Enabled) return;
+            if (!Game.Instance.Player.ControllableCharacters.Any())
+            {
+                GL.Label(Local["Menu_Lbl_NotInGame"]);
+                return;
+            }
             if (toggleStyle == null)
                 toggleStyle = new GUIStyle(GUI.skin.toggle) { wordWrap = true};
             using (new GL.VerticalScope("box"))

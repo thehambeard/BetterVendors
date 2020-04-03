@@ -94,7 +94,9 @@ namespace BetterVendors.Vendor
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
 
-            if (SceneManager.GetActiveScene().name.Equals("CapitalThroneRoom_Light") && ToggleAutoSell && ToggleVendorTrash && Mod.Enabled)
+            if ((Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0") ||
+                Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092"))
+                && ToggleAutoSell && ToggleVendorTrash && Mod.Enabled)
             {
                 Dictionary<ItemEntity, int> itemRemove = new Dictionary<ItemEntity, int>();
                 foreach (ItemEntity item in Game.Instance.Player.Inventory)
@@ -114,6 +116,29 @@ namespace BetterVendors.Vendor
 
         public void OnAreaScenesLoaded() { }
     }
+
+    public static class HighlightItemSlotHelper
+    {
+        public static void HighlightSlots(ItemSlot itemSlot)
+        {
+            if (itemSlot.HasItem && VendorTrashItems.Contains(itemSlot.Item.Blueprint.AssetGuid) && ToggleVendorTrash && Mod.Enabled)
+            {
+                itemSlot.ItemImage.color = TrashColor;
+            }
+            else if (itemSlot.HasItem && itemSlot.IsScroll && ToggleHighlightScrolls && Mod.Enabled)
+            {
+                itemSlot.ItemImage.color = ScrollColor;
+            }
+            else
+            {
+                if (itemSlot.HasItem)
+                    itemSlot.ItemImage.color = Color.white;
+                else
+                    itemSlot.ItemImage.color = Color.clear;
+            }
+        }
+    }
+
     [HarmonyPatch(typeof(VendorMassSale))]
     [HarmonyPatch("PushSale")]
     internal static class VenderMassSale_PushSale_Patch
@@ -139,26 +164,23 @@ namespace BetterVendors.Vendor
     }
 
     [HarmonyPatch(typeof(ItemSlot))]
+    [HarmonyPatch("CopyItem")]
+    internal static class ItemSlot_CopyItem_Patch
+    {
+        public static void Postfix(ItemSlot __instance)
+        {
+            Mod.Debug(MethodBase.GetCurrentMethod());
+            HighlightItemSlotHelper.HighlightSlots(__instance);
+        }
+    }
+
+    [HarmonyPatch(typeof(ItemSlot))]
     [HarmonyPatch("SetupEquipPossibility")]
     internal static class ItemSlot_SetupEquipPossibility_Patch
     {
         public static void Postfix(ItemSlot __instance)
         {
-            if (__instance.HasItem && VendorTrashItems.Contains(__instance.Item.Blueprint.AssetGuid) && ToggleVendorTrash && Mod.Enabled)
-            {
-                __instance.ItemImage.color = TrashColor;
-            }
-            else if (__instance.HasItem && __instance.IsScroll && ToggleHighlightScrolls && Mod.Enabled)
-            {
-                __instance.ItemImage.color = ScrollColor;
-            }
-            else
-            {
-                if (__instance.HasItem)
-                    __instance.ItemImage.color = Color.white;
-                else
-                    __instance.ItemImage.color = Color.clear;
-            }
+            HighlightItemSlotHelper.HighlightSlots(__instance);
         }
     }
 

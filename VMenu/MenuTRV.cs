@@ -1,7 +1,7 @@
 ﻿using Kingmaker;
 using ModMaker;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Linq;
 using UnityModManagerNet;
 using static BetterVendors.Main;
 using GL = UnityEngine.GUILayout;
@@ -29,13 +29,19 @@ namespace BetterVendors.VMenu
             using (new GL.VerticalScope())
             {
                 if (!Mod.Enabled) return;
+                if (!Game.Instance.Player.ControllableCharacters.Any())
+                {
+                    Mod.Debug("Hey");
+                    GL.Label(Local["Menu_Lbl_NotInGame"]);
+                    return;
+                }
                 if (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0") ||
                 Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092"))
                 {
                     OnGUIMenuVendor(TRV.VendorSelect.Hassuf);
-                OnGUIMenuVendor(TRV.VendorSelect.Verdel);
-                OnGUIMenuVendor(TRV.VendorSelect.Arsinoe);
-                OnGUIMenuVendor(TRV.VendorSelect.Zarcie);
+                    OnGUIMenuVendor(TRV.VendorSelect.Verdel);
+                    OnGUIMenuVendor(TRV.VendorSelect.Arsinoe);
+                    OnGUIMenuVendor(TRV.VendorSelect.Zarcie);
                 }
                 else
                 {

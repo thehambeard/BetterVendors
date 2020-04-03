@@ -44,7 +44,7 @@ namespace BetterVendors
             { "Menu_Tog_AutoSell", "Autosell trash items upon entering your throne room. The items are lost to the void and are gone forever in exchange for coin." },
             { "Menu_Tog_HLScrolls", "Highlight unlearned scolls for the current character" },
             { "Menu_Txt_Unlearned", "unlearned scroll" },
-            { "Menu_Tog_VendorTrash", "Vendor Trash: Enables you to ctrl click items in your inventory to set them as trash. They will move to the to sell box when you hit the offer button in the vendor screen or if you have the autosell enabled above it will sell trash items when you enter your throne room" },
+            { "Menu_Tog_VendorTrash", "Vendor Trash: Enables you to ctrl click items in your inventory to set them as trash. They will move to the to sell box when you hit the offer button in the vendor screen or if you have the autosell enabled below it will sell trash items when you enter your throne room" },
             { "Menu_Txt_VendorTrash", "vendor trash" },
             { "Menu_Txt_Color", "Select {0} highlight <color={1}>color</color>:" },
             { "Menu_Txt_Red", "Red: {0}" },
@@ -60,7 +60,8 @@ namespace BetterVendors
             { "Menu_Tog_ShowTrash", "Show Trash Items" },
             { "Menu_Tog_HideTrash", "Hide Trash Items" },
             { "Menu_Btn_AddAll", "Add all search results to {0}'s inventory" },
-            { "Menu_Lbl_Noresult", "No results found" }
+            { "Menu_Lbl_Noresult", "No results found" },
+            { "Menu_Lbl_NotInGame", "Not in gameabo" }
         };
 
         public T Deserialize<T>(TextReader reader)
