@@ -41,7 +41,7 @@ namespace BetterVendors.Vendor
             GameModeType currentMode = Game.Instance.CurrentMode;
 
 
-            if (currentMode == GameModeType.Default || currentMode == GameModeType.Pause && SceneManager.GetActiveScene().name.Contains("CapitalThroneRoom"))
+            if (currentMode == GameModeType.Default || currentMode == GameModeType.Pause && Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0"))
             {
                 DespawnVendor(vendor);
                 TRVendors[vendor].EntityData = Game.Instance.EntityCreator.SpawnUnit((BlueprintUnit)Utilities.GetBlueprintByGuid<BlueprintUnit>(TRVendors[vendor].Guid), TRVendors[vendor].Position, TRVendors[vendor].Rotation, Game.Instance.CurrentScene.MainState);
@@ -121,7 +121,7 @@ namespace BetterVendors.Vendor
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
 
-            if (SceneManager.GetActiveScene().name.Equals("CapitalThroneRoom"))
+            if (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0"))
             { 
                 CheckForVendorEntities();
                 foreach(VendorSelect vendor in Enum.GetValues(typeof(VendorSelect)))
