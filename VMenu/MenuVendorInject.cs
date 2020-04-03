@@ -39,11 +39,19 @@ namespace BetterVendors.VMenu
                 }
                 try
                 {
-                    if (results != null)
+                    if (results != null && results.Count > 0)
                     {
-                        
-                            GUILayout.Label(Local["Menu_Txt_VendorPick"], falseWidth);
-                            vendorToolbar = GUILayout.Toolbar(vendorToolbar, vendors, new GUIStyle(GUI.skin.button) {wordWrap = true, fixedHeight = 50f }, new GUILayoutOption[] {GL.MaxWidth(800f)});
+
+                        GUILayout.Label(Local["Menu_Txt_VendorPick"], falseWidth);
+                        vendorToolbar = GUILayout.Toolbar(vendorToolbar, vendors, new GUIStyle(GUI.skin.button) { wordWrap = true, fixedHeight = 50f }, new GUILayoutOption[] { GL.MaxWidth(800f) });
+                        if (GUILayout.Button(string.Format(Local["Menu_Btn_AddAll"], vendors[vendorToolbar]), falseWidth))
+                        {
+                            results = VendorInject.SearchItems(searchString);
+                            foreach (KeyValuePair<string, string> item in results)
+                            {
+                                VendorInject.addItemToVendor(item.Key, VendorInject.VendorTableIds[vendors[vendorToolbar]]);
+                            }
+                        }
                         foreach (KeyValuePair<string, string> item in results.OrderBy(x => x.Value))
                         {
                             using (new GL.HorizontalScope())
@@ -58,6 +66,8 @@ namespace BetterVendors.VMenu
                             }
                         }
                     }
+                    else
+                        GUILayout.Label(Local["Menu_Lbl_Noresult"]);
                 }
                 catch (Exception ex)
                 {

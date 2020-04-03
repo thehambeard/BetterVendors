@@ -58,7 +58,9 @@ namespace BetterVendors
             { "Menu_Txt_NotInThrone", "Not in throne room." },
             { "Menu_Btn_Remove", "Remove" },
             { "Menu_Tog_ShowTrash", "Show Trash Items" },
-            { "Menu_Tog_HideTrash", "Hide Trash Items" }
+            { "Menu_Tog_HideTrash", "Hide Trash Items" },
+            { "Menu_Btn_AddAll", "Add all search results to {0}'s inventory" },
+            { "Menu_Lbl_Noresult", "No results found" }
         };
 
         public T Deserialize<T>(TextReader reader)
