@@ -1,16 +1,20 @@
 ﻿using UnityEngine.SceneManagement;
+using System;
 using Harmony12;
 using Kingmaker;
 using Kingmaker.Items;
 using Kingmaker.PubSubSystem;
 using Kingmaker.UI.ServiceWindow;
 using Kingmaker.UI.Vendor;
+using Kingmaker.UI.Common;
+using Kingmaker.UI.GenericSlot;
 using ModMaker;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using static BetterVendors.Main;
 using static BetterVendors.VUtilities.SettingsWrapper;
+using Kingmaker.EntitySystem.Entities;
 
 namespace BetterVendors.Vendor
 {
@@ -34,7 +38,7 @@ namespace BetterVendors.Vendor
             EventBus.Subscribe(this);
         }
 
-        public void HandleSlotClick(ItemSlot slot)
+        public void HandleSlotClick(Kingmaker.UI.ServiceWindow.ItemSlot slot)
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
             bool control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
@@ -74,19 +78,19 @@ namespace BetterVendors.Vendor
             }
         }
 
-        public void HandleSlotDoubleClick(ItemSlot slot) { }
+        public void HandleSlotDoubleClick(Kingmaker.UI.ServiceWindow.ItemSlot slot) { }
 
-        public void HandleSlotDragEnd(ItemSlot from, ItemSlot to) { }
+        public void HandleSlotDragEnd(Kingmaker.UI.ServiceWindow.ItemSlot from, Kingmaker.UI.ServiceWindow.ItemSlot to) { }
 
-        public void HandleSlotDragStart(ItemSlot slot) { }
+        public void HandleSlotDragStart(Kingmaker.UI.ServiceWindow.ItemSlot slot) { }
 
-        public void HandleSlotDrop(ItemSlot slot) { }
+        public void HandleSlotDrop(Kingmaker.UI.ServiceWindow.ItemSlot slot) { }
 
-        public void HandleSlotHoverEnd(ItemSlot slot) { }
+        public void HandleSlotHoverEnd(Kingmaker.UI.ServiceWindow.ItemSlot slot) { }
 
-        public void HandleSlotHoverStart(ItemSlot slot) { }
+        public void HandleSlotHoverStart(Kingmaker.UI.ServiceWindow.ItemSlot slot) { }
 
-        public void HandleSlotSplit(ItemSlot from, ItemSlot to, int count = 0) { }
+        public void HandleSlotSplit(Kingmaker.UI.ServiceWindow.ItemSlot from, Kingmaker.UI.ServiceWindow.ItemSlot to, int count = 0) { }
 
         public void HandleSlotsSorted(SlotsGroup slotsGroup) { }
 
@@ -101,7 +105,7 @@ namespace BetterVendors.Vendor
                 Dictionary<ItemEntity, int> itemRemove = new Dictionary<ItemEntity, int>();
                 foreach (ItemEntity item in Game.Instance.Player.Inventory)
                 {
-                    if (VendorTrashItems.Contains(item.Blueprint.AssetGuid))
+                    if (VendorTrashItems.Contains(item.Blueprint.AssetGuid) && item.IsInStash)
                     {
                         Game.Instance.Player.GainMoney(item.Blueprint.SellPrice * (long)item.Count);
                         itemRemove.Add(item, item.Count);
@@ -119,8 +123,9 @@ namespace BetterVendors.Vendor
 
     public static class HighlightItemSlotHelper
     {
-        public static void HighlightSlots(ItemSlot itemSlot)
+        public static void HighlightSlots(Kingmaker.UI.ServiceWindow.ItemSlot itemSlot)
         {
+
             if (itemSlot.HasItem && VendorTrashItems.Contains(itemSlot.Item.Blueprint.AssetGuid) && ToggleVendorTrash && Mod.Enabled)
             {
                 itemSlot.ItemImage.color = TrashColor;
@@ -150,7 +155,7 @@ namespace BetterVendors.Vendor
             List<ItemEntity> listSell = new List<ItemEntity>();
             foreach (ItemEntity item in Game.Instance.Player.Inventory)
             {
-                if (VendorTrashItems.Contains(item.Blueprint.AssetGuid))
+                if (VendorTrashItems.Contains(item.Blueprint.AssetGuid) && item.IsInStash)
                 {
                     listSell.Add(item);
                 }
@@ -163,7 +168,7 @@ namespace BetterVendors.Vendor
         }
     }
 
-    [HarmonyPatch(typeof(ItemSlot))]
+    [HarmonyPatch(typeof(Kingmaker.UI.ServiceWindow.ItemSlot))]
     [HarmonyPatch("CopyItem")]
     internal static class ItemSlot_CopyItem_Patch
     {
@@ -171,14 +176,15 @@ namespace BetterVendors.Vendor
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
             HighlightItemSlotHelper.HighlightSlots(__instance);
+            __instance.UpdateCount();
         }
     }
 
-    [HarmonyPatch(typeof(ItemSlot))]
+    [HarmonyPatch(typeof(Kingmaker.UI.ServiceWindow.ItemSlot))]
     [HarmonyPatch("SetupEquipPossibility")]
     internal static class ItemSlot_SetupEquipPossibility_Patch
     {
-        public static void Postfix(ItemSlot __instance)
+        public static void Postfix(Kingmaker.UI.ServiceWindow.ItemSlot __instance)
         {
             HighlightItemSlotHelper.HighlightSlots(__instance);
         }

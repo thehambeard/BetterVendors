@@ -41,7 +41,7 @@ namespace BetterVendors.Vendor
             GameModeType currentMode = Game.Instance.CurrentMode;
 
 
-            if (currentMode == GameModeType.Default || currentMode == GameModeType.Pause && 
+            if (currentMode == GameModeType.Default || currentMode == GameModeType.Pause &&
                 (Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("173c1547502bb7243ad94ef8eec980d0") ||
                 Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092")))
             {
@@ -49,6 +49,15 @@ namespace BetterVendors.Vendor
                 TRVendors[vendor].EntityData = Game.Instance.EntityCreator.SpawnUnit((BlueprintUnit)Utilities.GetBlueprintByGuid<BlueprintUnit>(TRVendors[vendor].Guid), TRVendors[vendor].Position, TRVendors[vendor].Rotation, Game.Instance.CurrentScene.MainState);
                 TRVendors[vendor].IsSpawned = true;
                 TRVendors[vendor].Enabled = true;
+            }
+        }
+
+        public static void SpawnEnabledVendors()
+        {
+            foreach (KeyValuePair<VendorSelect, Vendor> vendor in TRVendors)
+            {
+                if (!vendor.Value.IsSpawned && vendor.Value.Enabled)
+                    SpawnVendor(vendor.Key);
             }
         }
 
@@ -88,6 +97,10 @@ namespace BetterVendors.Vendor
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
             int DictSize = TRVendors.Count;
+            foreach (KeyValuePair<VendorSelect, Vendor> vendor in TRVendors)
+            {
+                vendor.Value.IsSpawned = false;
+            }
             foreach (UnitEntityData unit in Game.Instance.State.Units)
             {
                 foreach (KeyValuePair<VendorSelect, Vendor> vendor in TRVendors)
@@ -127,6 +140,7 @@ namespace BetterVendors.Vendor
                 Game.Instance.CurrentlyLoadedArea.AssetGuid.Equals("c39ed0e2ceb98404b811b13cb5325092"))
             { 
                 CheckForVendorEntities();
+                SpawnEnabledVendors();
                 foreach(VendorSelect vendor in Enum.GetValues(typeof(VendorSelect)))
                 {
                     TRVendors[vendor].Name = Utilities.GetBlueprintByGuid<BlueprintUnit>(TRVendors[vendor].Guid).CharacterName;
