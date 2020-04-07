@@ -1,5 +1,6 @@
 ﻿using UnityEngine.SceneManagement;
 using System;
+using System.Linq;
 using Harmony12;
 using Kingmaker;
 using Kingmaker.Items;
@@ -41,37 +42,30 @@ namespace BetterVendors.Vendor
         public void HandleSlotClick(Kingmaker.UI.ServiceWindow.ItemSlot slot)
         {
             Mod.Debug(MethodBase.GetCurrentMethod());
+
             bool control = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+           
             if (control && ToggleVendorTrash && Mod.Enabled)
             {
-                if (VendorTrashItems.Contains(slot.Item.Blueprint.AssetGuid))
+                if (!slot.Item.IsNonRemovable && VendorTrashItems.Contains(slot.Item.Blueprint.AssetGuid) && slot.Index != -1)
                 {
                     VendorTrashItems.Remove(slot.Item.Blueprint.AssetGuid);
                     Mod.Debug(string.Format("{0} removed from trash list.", slot.Item.Blueprint.Name));
+                    
                     foreach (ItemTypicalSlot itp in slot.ParentGroup.Slots)
                     {
-                        if (itp.Item.Blueprint.AssetGuid.Equals(slot.Item.Blueprint.AssetGuid))
-                        {
-                            itp.ItemImage.color = Color.white;
-                            itp.UpdateCount();
-                        }
+                        HighlightItemSlotHelper.HighlightSlots(itp);
                     }
                 }
                 else
                 {
-                    Mod.Debug(!slot.Item.IsNonRemovable && !VendorInject.invalidItems.Contains(slot.Item.Blueprint.AssetGuid));
-                    if (!slot.Item.IsNonRemovable && !VendorInject.invalidItems.Contains(slot.Item.Blueprint.AssetGuid))
+                    if (!slot.Item.IsNonRemovable && !VendorInject.invalidItems.Contains(slot.Item.Blueprint.AssetGuid) && slot.Index != -1)
                     {
                         VendorTrashItems.Add(slot.Item.Blueprint.AssetGuid);
                         Mod.Debug(string.Format("{0} added to trash list.", slot.Item.Blueprint.Name));
-
                         foreach(ItemTypicalSlot itp in slot.ParentGroup.Slots)
                         {
-                            if(itp.Item.Blueprint.AssetGuid.Equals(slot.Item.Blueprint.AssetGuid))
-                            {
-                                itp.ItemImage.color = TrashColor;
-                                itp.UpdateCount();
-                            }
+                            HighlightItemSlotHelper.HighlightSlots(itp);
                         }
                     }
                 }
@@ -126,11 +120,11 @@ namespace BetterVendors.Vendor
         public static void HighlightSlots(Kingmaker.UI.ServiceWindow.ItemSlot itemSlot)
         {
 
-            if (itemSlot.HasItem && VendorTrashItems.Contains(itemSlot.Item.Blueprint.AssetGuid) && ToggleVendorTrash && Mod.Enabled)
+            if (itemSlot.Index != -1 && itemSlot.HasItem && VendorTrashItems.Contains(itemSlot.Item.Blueprint.AssetGuid) && ToggleVendorTrash && Mod.Enabled)
             {
                 itemSlot.ItemImage.color = TrashColor;
             }
-            else if (itemSlot.HasItem && itemSlot.IsScroll && ToggleHighlightScrolls && Mod.Enabled)
+            else if (itemSlot.Index != -1 && itemSlot.HasItem && itemSlot.IsScroll && ToggleHighlightScrolls && Mod.Enabled)
             {
                 itemSlot.ItemImage.color = ScrollColor;
             }

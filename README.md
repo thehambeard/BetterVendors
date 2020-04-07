@@ -1,6 +1,13 @@
 # BetterVendors
 A mod for Pathfinder Kingmaker, KingmakerModMaker is required to compile.
 
+## Version 1.0.7
+- Bug: All items on the player's body are now ignored from highlighting
+
+## Version 1.0.6
+- Bug: Equipped items are no longer trashed
+- Bug: Vendors set as enabled will automatically spawn in if they aren't already
+
 ## Version 1.0.5
 - Bug: When copying a scroll to your spellbook, if the scroll was in a stack the highlight wouldn't turn off	
 - Bug: Autosell wasn't triggering correctly	
